@@ -1,0 +1,26 @@
+{
+  "name": "Print Obat",
+  "description": "Cetak label identitas pasien dan obat untuk diprint di stiker etiket identitas berdasarkan registrasi j-care",
+  "version": "0.1",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": [
+    "scripting",
+    "tabs"
+  ],
+  "host_permissions": [
+    "http://192.168.100.178/j-care/*"
+  ],
+  "action": {
+      "default_title": "Print Obat",
+      "default_icon": "drug_16x16.png"
+  },
+  "manifest_version": 3,
+  "web_accessible_resources": [
+    {
+      "resources": ["drug_16x16.png"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
