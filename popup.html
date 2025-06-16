@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Print Obat</title>
+    <style>
+        body { font-family: Arial, sans-serif; width: 300px; padding: 10px; }
+        .hidden { display: none; } /* Kept for potential future use, though not actively used by removed elements */
+        p { margin: 5px 0; }
+        button { padding: 8px 12px; margin-top: 10px; cursor: pointer; width: 100%; }
+        a { color: blue; cursor: pointer; text-decoration: underline; }
+        #configDisplay { font-size: 0.9em; color: #555; margin-top:10px; padding-top:5px; border-top: 1px solid #eee;}
+    </style>
+</head>
+<body>
+    <h3>Print Obat Configuration</h3>
+    <!-- Changed title slightly to reflect new purpose -->
+
+    <div id="configDisplay">
+        <p><strong>Target URL:</strong> <span id="displayTargetUrl">Loading...</span></p>
+        <p><strong>Puskesmas:</strong> <span id="displayPuskesmasName">Loading...</span></p>
+    </div>
+
+    <p style="margin-top: 15px;"><a id="openOptionsLink">Open Settings</a></p>
+    <div id="statusMessagesPopup" style="font-size:0.9em; margin-top:5px;"></div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
