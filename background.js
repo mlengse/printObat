@@ -1,11 +1,9 @@
 let configuredTargetUrl = null;
-let isAuthenticated = false;
 
 function loadConfiguration() {
-  chrome.storage.local.get(['settings', 'authToken', 'userEmail'], (result) => {
+  chrome.storage.local.get(['settings'], (result) => {
     configuredTargetUrl = result.settings && result.settings.targetUrl ? result.settings.targetUrl : null;
-    isAuthenticated = !!result.authToken; // Check if authToken exists to determine authentication status
-    console.log('Configuration loaded:', { configuredTargetUrl, isAuthenticated, userEmail: result.userEmail });
+    console.log('Configuration loaded:', { configuredTargetUrl });
   });
 }
 
@@ -14,12 +12,14 @@ loadConfiguration();
 
 // Listen for storage changes to reload configuration
 chrome.storage.onChanged.addListener((changes, namespace) => {
-  if (namespace === 'local' && (changes.settings || changes.authToken || changes.userEmail)) {
-    console.log('Configuration changed, reloading...');
+  if (namespace === 'local' && changes.settings) {
+    console.log('Settings changed, reloading configuration...');
     loadConfiguration();
   }
 });
 
+// Note: getCurrentTab is not used in the provided onUpdated listener logic,
+// but kept here if it's used by other parts of the extension not shown.
 async function getCurrentTab() {
   let [tab] = await chrome.tabs.query({ 
 		active: true, 
@@ -30,20 +30,17 @@ async function getCurrentTab() {
 
 // Called when the url of a tab changes.
 chrome.tabs.onUpdated.addListener(async function(tabId, changeInfo, tab) {
-  // Ensure the tab object is the one from the event or refetch if necessary,
-  // but getCurrentTab() might not be what we want here if the update is for a non-active tab.
-  // The 'tab' argument from onUpdated is usually sufficient if its 'url' property is populated.
-  // We only care about updates where the URL is present and has changed to something meaningful.
-	if (changeInfo.url) { // Check if URL changed
-		// Use the URL from changeInfo as tab.url might be outdated for this specific event
+  // We only care about updates where the URL is present and has changed.
+	if (changeInfo.url) {
 		console.log('Tab URL updated:', changeInfo.url);
-		console.log('Current configuration:', { isAuthenticated, configuredTargetUrl });
+		console.log('Current configuration:', { configuredTargetUrl });
 
-		if (isAuthenticated && configuredTargetUrl && changeInfo.url.startsWith(configuredTargetUrl)) {
-			console.log('Matching URL and authenticated, executing script for tab ID:', tab.id);
+		// Check if the configuredTargetUrl is set and if the tab's URL starts with it.
+		if (configuredTargetUrl && changeInfo.url.startsWith(configuredTargetUrl)) {
+			console.log('Matching URL, executing script for tab ID:', tab.id);
 			chrome.scripting.executeScript({
 				target: {
-					tabId: tab.id
+					tabId: tab.id // Use tab.id from the listener argument
 				},
 				files: [ 
 					"jquery-3.7.1.min.js",
@@ -62,7 +59,6 @@ chrome.tabs.onUpdated.addListener(async function(tabId, changeInfo, tab) {
       });
 		} else {
 			console.log('Conditions not met for script execution:', {
-				isAuthenticated,
 				configuredTargetUrl,
 				url: changeInfo.url,
 				startsWith: configuredTargetUrl ? changeInfo.url.startsWith(configuredTargetUrl) : 'N/A (no target URL)'
