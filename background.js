@@ -25,7 +25,7 @@ chrome.tabs.onUpdated.addListener(async function() {
 					tabId: tab.id
 				},
 				files: [ 
-					"jquery-1.11.3.js", 
+					"jquery-3.7.1.min.js",
 					"bardcode.min.js", 
 					"base64.min.js" ,
 					"sprintf.min.js",
