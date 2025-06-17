@@ -3,23 +3,23 @@ let configuredTargetUrl = null;
 function loadConfiguration() {
   chrome.storage.local.get(['settings'], (result) => {
     configuredTargetUrl = result.settings && result.settings.targetUrl ? result.settings.targetUrl : null;
-    console.log('Configuration loaded:', { configuredTargetUrl });
+    console.log('Konfigurasi dimuat:', { configuredTargetUrl });
   });
 }
 
-// Load configuration when the service worker starts
+// Muat konfigurasi saat service worker dimulai
 loadConfiguration();
 
-// Listen for storage changes to reload configuration
+// Dengarkan perubahan penyimpanan untuk memuat ulang konfigurasi
 chrome.storage.onChanged.addListener((changes, namespace) => {
   if (namespace === 'local' && changes.settings) {
-    console.log('Settings changed, reloading configuration...');
+    console.log('Pengaturan berubah, memuat ulang konfigurasi...');
     loadConfiguration();
   }
 });
 
-// Note: getCurrentTab is not used in the provided onUpdated listener logic,
-// but kept here if it's used by other parts of the extension not shown.
+// Catatan: getCurrentTab tidak digunakan dalam logika listener onUpdated yang diberikan,
+// tetapi disimpan di sini jika digunakan oleh bagian lain dari ekstensi yang tidak ditampilkan.
 async function getCurrentTab() {
   let [tab] = await chrome.tabs.query({ 
 		active: true, 
@@ -28,19 +28,19 @@ async function getCurrentTab() {
   return tab;
 }
 
-// Called when the url of a tab changes.
+// Dipanggil ketika url tab berubah.
 chrome.tabs.onUpdated.addListener(async function(tabId, changeInfo, tab) {
-  // We only care about updates where the URL is present and has changed.
+  // Kita hanya peduli pada pembaruan di mana URL ada dan telah berubah.
 	if (changeInfo.url) {
-		console.log('Tab URL updated:', changeInfo.url);
-		console.log('Current configuration:', { configuredTargetUrl });
+		console.log('URL Tab diperbarui:', changeInfo.url);
+		console.log('Konfigurasi saat ini:', { configuredTargetUrl });
 
-		// Check if the configuredTargetUrl is set and if the tab's URL starts with it.
+		// Periksa apakah configuredTargetUrl sudah diatur dan apakah URL tab dimulai dengan itu.
 		if (configuredTargetUrl && changeInfo.url.startsWith(configuredTargetUrl)) {
-			console.log('Matching URL, executing script for tab ID:', tab.id);
+			console.log('URL cocok, menjalankan skrip untuk ID tab:', tab.id);
 			chrome.scripting.executeScript({
 				target: {
-					tabId: tab.id // Use tab.id from the listener argument
+					tabId: tab.id // Gunakan tab.id dari argumen listener
 				},
 				files: [ 
 					"jquery-3.7.1.min.js",
@@ -52,16 +52,16 @@ chrome.tabs.onUpdated.addListener(async function(tabId, changeInfo, tab) {
 					]
 			}, () => {
         if (chrome.runtime.lastError) {
-          console.error("Script execution failed: ", chrome.runtime.lastError.message, "on URL:", changeInfo.url);
+          console.error("Eksekusi skrip gagal: ", chrome.runtime.lastError.message, "on URL:", changeInfo.url);
         } else {
-          console.log("Script executed successfully on:", changeInfo.url);
+          console.log("Skrip berhasil dijalankan pada:", changeInfo.url);
         }
       });
 		} else {
-			console.log('Conditions not met for script execution:', {
+			console.log('Kondisi tidak terpenuhi untuk eksekusi skrip:', {
 				configuredTargetUrl,
 				url: changeInfo.url,
-				startsWith: configuredTargetUrl ? changeInfo.url.startsWith(configuredTargetUrl) : 'N/A (no target URL)'
+				startsWith: configuredTargetUrl ? changeInfo.url.startsWith(configuredTargetUrl) : 'N/A (tidak ada URL target)'
 			});
 		}
 	}
