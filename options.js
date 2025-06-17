@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const saveButton = document.getElementById('saveButton');
-    // const configSection = document.getElementById('configSection'); // Not strictly needed as it's always visible
+    // const configSection = document.getElementById('configSection'); // Tidak terlalu dibutuhkan karena selalu terlihat
     const targetUrlInput = document.getElementById('targetUrl');
     const puskesmasNameInput = document.getElementById('puskesmasName');
     const statusMessagesDiv = document.getElementById('statusMessages');
@@ -8,8 +8,8 @@ document.addEventListener('DOMContentLoaded', function () {
     function updateUI(settings = {}) {
         targetUrlInput.value = settings && settings.targetUrl ? settings.targetUrl : '';
         puskesmasNameInput.value = settings && settings.puskesmasName ? settings.puskesmasName : '';
-        // configSection is now always visible via HTML, so no need to toggle its class here.
-        statusMessagesDiv.textContent = ''; // Clear old messages
+        // configSection sekarang selalu terlihat via HTML, jadi tidak perlu mengubah kelasnya di sini.
+        statusMessagesDiv.textContent = ''; // Hapus pesan lama
     }
 
     function showStatus(message, isError = false) {
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
         statusMessagesDiv.style.color = isError ? 'red' : 'green';
     }
 
-    // Load initial settings
+    // Muat pengaturan awal
     chrome.storage.local.get(['settings'], (result) => {
         updateUI(result.settings);
     });
@@ -29,16 +29,16 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         if (!settings.targetUrl) {
-            showStatus('Target URL cannot be empty.', true);
+            showStatus('URL Target tidak boleh kosong.', true);
             return;
         }
-        // Puskesmas name can be optional or have a default.
+        // Nama Puskesmas bisa opsional atau memiliki nilai default.
 
         chrome.storage.local.set({ settings: settings }, () => {
             if (chrome.runtime.lastError) {
-                showStatus('Error saving settings: ' + chrome.runtime.lastError.message, true);
+                showStatus('Gagal menyimpan pengaturan: ' + chrome.runtime.lastError.message, true);
             } else {
-                showStatus('Settings saved successfully!');
+                showStatus('Pengaturan berhasil disimpan!');
             }
         });
     });

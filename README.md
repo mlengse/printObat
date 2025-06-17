@@ -1,43 +1,43 @@
-# Print Obat Chrome Extension
+# Ekstensi Chrome Print Obat
 
-## Overview
+## Ringkasan
 
-**Print Obat** is a Chrome extension designed to print patient identity labels and medication information onto sticker labels. This functionality is based on registrations within the j-care system.
+**Print Obat** adalah ekstensi Chrome yang dirancang untuk mencetak label identitas pasien dan informasi obat ke stiker label. Fungsionalitas ini berdasarkan registrasi dalam sistem j-care.
 
-(In Indonesian: Cetak label identitas pasien dan obat untuk diprint di stiker etiket identitas berdasarkan registrasi j-care)
+(Deskripsi asli: Cetak label identitas pasien dan obat untuk diprint di stiker etiket identitas berdasarkan registrasi j-care)
 
-## Configuration
+## Konfigurasi
 
-This extension requires manual configuration for the Target j-care URL and the Nama Puskesmas (Clinic Name). These settings are accessible via the extension's popup or by right-clicking the extension icon and choosing "Options".
+Ekstensi ini memerlukan konfigurasi manual untuk URL Target j-care dan Nama Puskesmas. Pengaturan ini dapat diakses melalui popup ekstensi atau dengan mengklik kanan ikon ekstensi dan memilih "Opsi" (Options).
 
-*   **Target j-care URL**: The base URL for the j-care system where the extension will activate (e.g., `http://your-jcare-server/j-care/`). This field is mandatory.
-*   **Nama Puskesmas (Clinic Name)**: The name of the clinic/Puskesmas to be printed on the labels (e.g., `PKM Jayengan`). This will be used as the default name on labels.
+*   **URL Target j-care**: URL dasar untuk sistem j-care tempat ekstensi akan aktif (contoh: `http://server-jcare-anda/j-care/`). Kolom ini wajib diisi.
+*   **Nama Puskesmas**: Nama klinik/Puskesmas yang akan dicetak pada label (contoh: `PKM Jayengan`). Nama ini akan digunakan sebagai nama default pada label.
 
-## How it Works
+## Cara Kerja
 
-The extension automatically activates when you navigate to pages matching the configured "Target j-care URL". It is designed to work on paths under this URL, typically involving `/visits/`.
+Ekstensi secara otomatis aktif ketika Anda membuka halaman yang cocok dengan "URL Target j-care" yang telah dikonfigurasi. Ekstensi ini dirancang untuk bekerja pada path di bawah URL ini, biasanya melibatkan `/visits/`.
 
-Once active on a compatible page, the extension enhances the interface by adding print icons (drug_16x16.png) next to relevant items, such as medication entries in a table.
+Setelah aktif pada halaman yang kompatibel, ekstensi akan menyempurnakan antarmuka dengan menambahkan ikon cetak (drug_16x16.png) di sebelah item yang relevan, seperti entri obat dalam tabel.
 
-## Usage
+## Penggunaan
 
-1.  Click on the extension icon to open the popup, or right-click the icon and select "Options". Configure your "Target j-care URL" and "Nama Puskesmas". Save the settings. The Target URL is required for the extension to function.
-2.  Navigate to the j-care system, specifically a page under the configured "Target j-care URL".
-3.  Ensure the patient data or medication list is visible on the j-care page.
-4.  The extension will automatically add print icons next to printable items.
-5.  Click the print icon next to the item you wish to generate a label for.
-6.  This will trigger the generation of a PDF label, likely displayed in a new iframe or tab, ready for printing.
+1.  Klik ikon ekstensi untuk membuka popup, atau klik kanan ikon dan pilih "Opsi" (Options). Konfigurasikan "URL Target j-care" dan "Nama Puskesmas" Anda. Simpan pengaturan. URL Target diperlukan agar ekstensi berfungsi.
+2.  Buka sistem j-care, khususnya halaman di bawah "URL Target j-care" yang telah dikonfigurasi.
+3.  Pastikan data pasien atau daftar obat terlihat di halaman j-care.
+4.  Ekstensi akan secara otomatis menambahkan ikon cetak di sebelah item yang dapat dicetak.
+5.  Klik ikon cetak di sebelah item yang ingin Anda buatkan labelnya.
+6.  Ini akan memicu pembuatan label PDF, yang kemungkinan akan ditampilkan dalam iframe baru atau tab baru, siap untuk dicetak.
 
-## Prerequisites
+## Prasyarat
 
-- Configuration of the "Target j-care URL" in the extension's options page. The "Nama Puskesmas" should also be set.
-- Access to your j-care system at the configured "Target j-care URL".
-- The extension is primarily designed to work on pages under the configured "Target j-care URL" (typically paths like `/visits/`). Functionality on other pages is not guaranteed.
+- Konfigurasi "URL Target j-care" di halaman opsi ekstensi. "Nama Puskesmas" juga sebaiknya diatur.
+- Akses ke sistem j-care Anda pada "URL Target j-care" yang telah dikonfigurasi.
+- Ekstensi ini utamanya dirancang untuk bekerja pada halaman di bawah "URL Target j-care" yang telah dikonfigurasi (biasanya path seperti `/visits/`). Fungsionalitas pada halaman lain tidak dijamin.
 
-## Technologies Used
+## Teknologi yang Digunakan
 
 *   jQuery
-*   Libraries for barcode generation (`bardcode.min.js`) and PDF creation (`jsLabel2PDF.js`).
+*   Library untuk pembuatan barcode (`bardcode.min.js`) dan pembuatan PDF (`jsLabel2PDF.js`).
 
 ---
-_README updated to reflect simplified configuration._
+_README telah diperbarui untuk mencerminkan konfigurasi yang disederhanakan dan diterjemahkan ke Bahasa Indonesia._

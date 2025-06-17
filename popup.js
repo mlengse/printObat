@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const openOptionsLink = document.getElementById('openOptionsLink');
-    // const configDisplayDiv = document.getElementById('configDisplay'); // Not strictly needed as it's always visible
+    // const configDisplayDiv = document.getElementById('configDisplay'); // Tidak terlalu dibutuhkan karena selalu terlihat
     const displayTargetUrl = document.getElementById('displayTargetUrl');
     const displayPuskesmasName = document.getElementById('displayPuskesmasName');
     const statusMessagesPopupDiv = document.getElementById('statusMessagesPopup');
@@ -8,23 +8,23 @@ document.addEventListener('DOMContentLoaded', function () {
     function showPopupStatus(message, isError = false) {
         statusMessagesPopupDiv.textContent = message;
         statusMessagesPopupDiv.style.color = isError ? 'crimson' : 'green';
-        setTimeout(() => { statusMessagesPopupDiv.textContent = ''; }, 5000);
+        setTimeout(() => { statusMessagesPopupDiv.textContent = ''; }, 5000); // Pesan hilang setelah 5 detik
     }
 
     function updatePopupUI(settings = {}) {
-        // configDisplayDiv is now always visible via HTML
-        displayTargetUrl.textContent = settings && settings.targetUrl ? settings.targetUrl : 'Not set';
-        displayPuskesmasName.textContent = settings && settings.puskesmasName ? settings.puskesmasName : 'Not set';
+        // configDisplayDiv sekarang selalu terlihat via HTML
+        displayTargetUrl.textContent = settings && settings.targetUrl ? settings.targetUrl : 'Belum diatur';
+        displayPuskesmasName.textContent = settings && settings.puskesmasName ? settings.puskesmasName : 'Belum diatur';
     }
 
-    // Initial UI update
+    // Perbarui UI awal
     chrome.storage.local.get(['settings'], (result) => {
         updatePopupUI(result.settings);
     });
 
-    // Listen for storage changes to keep popup UI sync
+    // Dengarkan perubahan penyimpanan untuk menjaga sinkronisasi UI popup
     chrome.storage.onChanged.addListener((changes, namespace) => {
-        if (namespace === 'local' && changes.settings) { // Only react if settings change
+        if (namespace === 'local' && changes.settings) { // Hanya bereaksi jika pengaturan berubah
             chrome.storage.local.get(['settings'], (result) => {
                 updatePopupUI(result.settings);
             });
